@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegistrationScreen extends StatefulWidget {
+  static const String id = "REGISTRATION_SCREEN";
   const RegistrationScreen({Key? key}) : super(key: key);
 
   @override
@@ -8,6 +10,11 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+
+  final _auth = FirebaseAuth.instance;
+
+  late String email;
+  late String password;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +33,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 48.0,
             ),
             TextField(
+              keyboardType: TextInputType.emailAddress,
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
               onChanged: (value) {
                 //input user email
+                email = value;
               },
               decoration: const InputDecoration(
                 hintText: 'Input your Email',
@@ -49,8 +60,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               height: 8.0,
             ),
             TextField(
+              obscureText: true,
+              style: TextStyle(color: Colors.black),
+              textAlign: TextAlign.center,
               onChanged: (value) {
                 //input user name
+                password = value;
               },
               decoration: const InputDecoration(
                 hintText: 'Input your Name',

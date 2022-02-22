@@ -1,8 +1,10 @@
 import 'package:chat_app/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 //stful, buat layout yang dinamis
 class ChatScreen extends StatefulWidget {
+  static const String id = "CHAT_SCREEN";
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
@@ -10,6 +12,25 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+
+  final _auth = FirebaseAuth.instance;
+  late User loggedInUser;
+
+  void getCurrentUser() {
+    try {
+      final user = _auth.currentUser;
+      if(user != null) {
+        loggedInUser == user;
+        print(loggedInUser.email);
+      }
+    } catch (e) {}
+  }
+
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
