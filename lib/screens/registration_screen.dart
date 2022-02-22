@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/chat_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -92,8 +93,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 color: Colors.blueAccent,
                 borderRadius: BorderRadius.all(Radius.circular(30)),
                 child: MaterialButton(
-                  onPressed: () {
-                    //button registration
+                  onPressed: () async {
+                    try {
+                      await _auth.signInWithEmailAndPassword(email: email, password: password);
+                      Navigator.pushNamed(context, ChatScreen.id);
+                    }catch(e){
+                      print(e);
+                    }
                   },
                   minWidth: 200.0,
                   height: 42,
