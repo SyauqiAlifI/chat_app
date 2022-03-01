@@ -118,11 +118,8 @@ class MessageStream extends StatelessWidget {
           }
           return Expanded(
             child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-
-              child: ListView(
-              children: messageBubbles)
-          ),
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: ListView(children: messageBubbles)),
           );
         });
   }
@@ -139,28 +136,35 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      // isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: [
-        Text(
-          sender,
-          style: TextStyle(color: Colors.black54, fontSize: 12),
-        ),
-        Material(
-            borderRadius: BorderRadius.circular(30),
-            // topLeft: isMe ? Radius.circular(30) : Radius.circular(0),
-            // topRight: isMe ? Radius.circular(0) : Radius.circular(30),
-            // bottomRight: Radius.circular(30),
-            // bottomLeft: Radius.circular(30)),
-            elevation: 5,
-            // color: isMe ? Colors.lightBlue : Colors.white,
-            child: Text(
-              text,
-              style: TextStyle(color: Colors.white, fontSize: 15),
-              // color: isMe ? Colors.white : Colors.black54, fontSize: 15),
-            ))
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        // isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        children: [
+          Text(
+            sender,
+            style: TextStyle(color: Colors.black54, fontSize: 12),
+          ),
+          Material(
+              borderRadius: BorderRadius.circular(30),
+              // topLeft: isMe ? Radius.circular(30) : Radius.circular(0),
+              // topRight: isMe ? Radius.circular(0) : Radius.circular(30),
+              // bottomRight: Radius.circular(30),
+              // bottomLeft: Radius.circular(30)),
+              elevation: 5,
+              // color: isMe ? Colors.lightBlue : Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Text(
+                  text,
+                  style: TextStyle(color: Colors.white, fontSize: 15),
+                  // color: isMe ? Colors.white : Colors.black54, fontSize: 15),
+                ),
+              )
+          )
+        ],
+      ),
     );
   }
 }
