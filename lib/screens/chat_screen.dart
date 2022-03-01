@@ -1,4 +1,5 @@
 import 'package:chat_app/constants.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
+
+  final _firestore = FirebaseFirestore.instance;
+  late String message;
 
   void getCurrentUser() {
     try {
@@ -59,7 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        //for user input
+                        message = value;
                       },
                       decoration: kMessageTextFieldDecoration,
                     ),
