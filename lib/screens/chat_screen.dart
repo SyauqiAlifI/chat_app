@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final _firestore = FirebaseFirestore.instance;
+
 //stful, buat layout yang dinamis
 class ChatScreen extends StatefulWidget {
   static const String id = "CHAT_SCREEN";
@@ -55,6 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            MessageStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -110,7 +112,11 @@ class MessageStream extends StatelessWidget {
         final messageWidget = Text("$messageText from $messageSender");
         messageWidgets.add(messageWidget);
       }
-
+      return Expanded(
+          child: ListView(
+            children: messageWidgets,
+          )
+      );
     }
     );
   }
