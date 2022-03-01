@@ -120,7 +120,7 @@ class MessageStream extends StatelessWidget {
             final currentUserEmail = loggedInUser.email;
 
             final messageWidget =
-                MessageBubble(sender: messageSender, text: messageText, isMe: ,);
+                MessageBubble(sender: messageSender, text: messageText, isMe: currentUserEmail == messageSender,);
             messageBubbles.add(messageWidget);
           }
           return Expanded(
