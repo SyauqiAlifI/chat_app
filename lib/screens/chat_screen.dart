@@ -2,6 +2,7 @@ import 'package:chat_app/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -35,6 +36,9 @@ class _ChatScreenState extends State<ChatScreen> {
   final _textController = TextEditingController();
 
   final _auth = FirebaseAuth.instance;
+
+  late DateTime now;
+  late String formattedDate;
 
   void getCurrentUser() {
     try {
@@ -90,10 +94,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
+                      setState(() {
+                        now = DateTime.now();
+                        formattedDate = DateFormat("kk:mm:ss").format(now);
+                      });
                       _textController.clear();
                       _firestore
                           .collection("messages")
-                          .add({"text": message, "sender": loggedInUser.email});
+                          .add({"text": message, "sender": loggedInUser.email!, "time" : formattedDate});
                     },
                     child: Text('Send', style: kSendButtonTextStyle),
                   )
@@ -113,7 +121,9 @@ class MessageStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("messages").snapshots(),
+        stream: _firestore.collection("messages")
+            .orderBy("time", descending: true)
+            .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(
@@ -148,7 +158,8 @@ class MessageStream extends StatelessWidget {
 
 class MessageBubble extends StatelessWidget {
   final String sender;
-  final String text;final bool isMe;
+  final String text;
+  final bool isMe;
 
   const MessageBubble({Key? key, required this.sender, required this.text, required this.isMe})
       : super(key: key);
