@@ -4,6 +4,19 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 final _firestore = FirebaseFirestore.instance;
+
+final _auth = FirebaseAuth.instance;
+
+void getCurrentUser() {
+  try {
+    final user = _auth.currentUser;
+    if (user != null) {
+      loggedInUser = user;
+      print(loggedInUser.email);
+    }
+  } catch (e) {}
+}
+
 late User loggedInUser;
 
 //stful, buat layout yang dinamis
@@ -17,11 +30,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final _auth = FirebaseAuth.instance;
-
   late String message;
 
   final _textController = TextEditingController();
+
+  final _auth = FirebaseAuth.instance;
 
   void getCurrentUser() {
     try {
