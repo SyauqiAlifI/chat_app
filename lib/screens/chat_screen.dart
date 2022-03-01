@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+final _firestore = FirebaseFirestore.instance;
 //stful, buat layout yang dinamis
 class ChatScreen extends StatefulWidget {
   static const String id = "CHAT_SCREEN";
@@ -17,7 +18,6 @@ class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
 
-  final _firestore = FirebaseFirestore.instance;
   late String message;
 
   void getCurrentUser() {
@@ -84,3 +84,35 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 }
+
+class MessageStream extends StatelessWidget {
+  const MessageStream({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<QuerySnapshot>(
+        stream: _firestore.collection("message").snapshots(),
+        builder: (context, snapshot) {
+      if (!snapshot.hasData) {
+        return Center(
+          child: CircularProgressIndicator(
+            backgroundColor: Colors.lightBlue,
+          ),
+        );
+      }
+
+      final messages = snapshot.data!.docs;
+      List<Text> messageWidgets = [];
+      for (var message in messages) {
+        final messageText = message["text"];
+        final messageSender = message["sender"];
+
+        final messageWidget = Text("$messageText from $messageSender");
+        messageWidgets.add(messageWidget);
+      }
+
+    }
+    );
+  }
+}
+
