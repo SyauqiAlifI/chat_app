@@ -56,7 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            MessageStream(),
+            const MessageStream(),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
