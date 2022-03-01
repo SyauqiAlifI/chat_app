@@ -62,6 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Expanded(
                     child: TextField(
+                      style: TextStyle(color: Colors.black),
                       onChanged: (value) {
                         message = value;
                       },
@@ -70,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      //for send some message
+                      _firestore.collection("messages").add({"text": message, "sender": loggedInUser.email});
                     },
                     child: Text('Send', style: kSendButtonTextStyle),
                   )
