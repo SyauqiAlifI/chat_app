@@ -107,6 +107,7 @@ class MessageStream extends StatelessWidget {
           }
 
           final messages = snapshot.data!.docs;
+
           List<MessageBubble> messageBubbles = [];
           for (var message in messages) {
             final messageText = message["text"];
@@ -118,7 +119,8 @@ class MessageStream extends StatelessWidget {
           }
           return Expanded(
             child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: ListView(children: messageBubbles)),
           );
         });
@@ -155,14 +157,14 @@ class MessageBubble extends StatelessWidget {
               elevation: 5,
               // color: isMe ? Colors.lightBlue : Colors.white,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Text(
                   text,
                   style: TextStyle(color: Colors.white, fontSize: 15),
                   // color: isMe ? Colors.white : Colors.black54, fontSize: 15),
                 ),
-              )
-          )
+              ))
         ],
       ),
     );
