@@ -8,6 +8,7 @@ final _firestore = FirebaseFirestore.instance;
 //stful, buat layout yang dinamis
 class ChatScreen extends StatefulWidget {
   static const String id = "CHAT_SCREEN";
+
   const ChatScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +16,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
 
@@ -24,7 +24,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
-      if(user != null) {
+      if (user != null) {
         loggedInUser = user;
         print(loggedInUser.email);
       }
@@ -36,6 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
     getCurrentUser();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +74,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      _firestore.collection("messages").add({"text": message, "sender": loggedInUser.email});
+                      _firestore
+                          .collection("messages")
+                          .add({"text": message, "sender": loggedInUser.email});
                     },
                     child: Text('Send', style: kSendButtonTextStyle),
                   )
@@ -95,30 +98,69 @@ class MessageStream extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
         stream: _firestore.collection("messages").snapshots(),
         builder: (context, snapshot) {
-      if (!snapshot.hasData) {
-        return Center(
-          child: CircularProgressIndicator(
-            backgroundColor: Colors.lightBlue,
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.lightBlue,
+              ),
+            );
+          }
+
+          final messages = snapshot.data!.docs;
+          List<MessageBubble> messageBubbles = [];
+          for (var message in messages) {
+            final messageText = message["text"];
+            final messageSender = message["sender"];
+
+            final messageWidget =
+                MessageBubble(sender: messageSender, text: messageText);
+            messageBubbles.add(messageWidget);
+          }
+          return Expanded(
+            child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+
+              child: ListView(
+              children: messageBubbles)
           ),
-        );
-      }
-
-      final messages = snapshot.data!.docs;
-      List<Text> messageWidgets = [];
-      for (var message in messages) {
-        final messageText = message["text"];
-        final messageSender = message["sender"];
-
-        final messageWidget = Text("$messageText from $messageSender");
-        messageWidgets.add(messageWidget);
-      }
-      return Expanded(
-          child: ListView(
-            children: messageWidgets,
-          )
-      );
-    }
-    );
+          );
+        });
   }
 }
 
+class MessageBubble extends StatelessWidget {
+  final String sender;
+  final String text;
+
+  // final bool isMe;
+
+  const MessageBubble({Key? key, required this.sender, required this.text})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      // isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: [
+        Text(
+          sender,
+          style: TextStyle(color: Colors.black54, fontSize: 12),
+        ),
+        Material(
+            borderRadius: BorderRadius.circular(30),
+            // topLeft: isMe ? Radius.circular(30) : Radius.circular(0),
+            // topRight: isMe ? Radius.circular(0) : Radius.circular(30),
+            // bottomRight: Radius.circular(30),
+            // bottomLeft: Radius.circular(30)),
+            elevation: 5,
+            // color: isMe ? Colors.lightBlue : Colors.white,
+            child: Text(
+              text,
+              style: TextStyle(color: Colors.white, fontSize: 15),
+              // color: isMe ? Colors.white : Colors.black54, fontSize: 15),
+            ))
+      ],
+    );
+  }
+}
