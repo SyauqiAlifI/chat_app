@@ -60,13 +60,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: null,
+        leading: Icon(Icons.forum),
         title: Text('Chat'),
         backgroundColor: Colors.lightBlueAccent,
         actions: [
           IconButton(
               onPressed: () {
-                //for logout
+                _auth.signOut();
+                Navigator.pop(context);
               },
               icon: Icon(Icons.close))
         ],
