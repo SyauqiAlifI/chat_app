@@ -127,7 +127,7 @@ class MessageStream extends StatelessWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 backgroundColor: Colors.lightBlue,
               ),
@@ -143,8 +143,11 @@ class MessageStream extends StatelessWidget {
 
             final currentUserEmail = loggedInUser.email;
 
-            final messageWidget =
-                MessageBubble(sender: messageSender, text: messageText, isMe: currentUserEmail == messageSender,);
+            final messageWidget = MessageBubble(
+              sender: messageSender,
+              text: messageText,
+              isMe: currentUserEmail == messageSender
+            );
             messageBubbles.add(messageWidget);
           }
           return Expanded(
