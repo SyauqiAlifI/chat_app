@@ -122,7 +122,8 @@ class MessageStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection("messages")
+        stream: _firestore
+            .collection("messages")
             .orderBy("time", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -151,10 +152,11 @@ class MessageStream extends StatelessWidget {
             messageBubbles.add(messageWidget);
           }
           return Expanded(
-            child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                child: ListView(children: messageBubbles)),
+            child: ListView(
+              reverse: true,
+              children: messageBubbles,
+              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+            ),
           );
         });
   }
